@@ -25,13 +25,13 @@ Route::post('/importar-personas', 'PersonaController@ImportarExcel')->name('inpe
 
 Route::post('/guardar-personas', 'PersonaController@Guardar')->name('guardarPersonas');
 
-Route::post('/editar-estado', 'PersonaController@updateEstado')->name('updatePersona');
+Route::post('/editar-estado/{persona}', 'PersonaController@updateEstado')->name('updatePersona');
 
 Route::post('/editar-persona', 'PersonaController@update')->name('updatePersona2');
 
 Route::get('/persona/{persona}/edit', 'PersonaController@edit')->name('editarPersona');
 
-Route::post('/eliminarPersona', 'PersonaController@eliminar')->name('eliminarPersona');
+Route::post('/eliminarPersona/{persona}', 'PersonaController@eliminar')->name('eliminarPersona');
 
 //selects en Personas, lideres y testigos
 Route::post('/enviarDepartamento', 'PersonaController@selectDepartamento')->name('enviarDepartamento');

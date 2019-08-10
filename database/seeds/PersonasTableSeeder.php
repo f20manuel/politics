@@ -12,7 +12,7 @@ class PersonasTableSeeder extends Seeder
      */
     public function run()
     {
-        $count = 0;
+        $count = 15;
         factory(Persona::class, $count)->create();
     }
 }

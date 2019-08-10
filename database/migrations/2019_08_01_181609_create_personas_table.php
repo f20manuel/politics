@@ -19,7 +19,7 @@ class CreatePersonasTable extends Migration
             $table->string('nombre');
             $table->string('apellidos');
             $table->string('celular')->unique();
-            $table->string('telefonos')->unique()->nullable();
+            $table->string('telefonos')->nullable();
             $table->string('email')->unique()->nullable();
             $table->unsignedBigInteger('comuna_id')->nullable();
             $table->unsignedBigInteger('lider_id')->nullable();

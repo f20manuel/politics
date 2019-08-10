@@ -166,7 +166,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <input type="number" class="form-control" id="celular" name="celular" placeholder="Número de Celular (opcional)">
+                                                    <input type="number" class="form-control" id="celular" name="celular" placeholder="Número de Celular" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -263,7 +263,6 @@
                                         </div>
                                       </div>
                                       <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Guardar y Agregar otro</button>
                                         <button type="submit" id="guardar" class="btn btn-primary">Guardar</button>
                                       </div>
                                     </form>
@@ -287,7 +286,9 @@
                                     <th scope="col">
                                         Información Política
                                     </th>
-                                    <th></th>
+                                    <th>
+                                        Opciones
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody id="foreachPersonaSearch" class="list">
@@ -323,7 +324,8 @@
                                             $departamento = $departamentos->where('id', $persona->departamento_id)->first();
                                             $municipio = $municipios->where('id', $persona->municipio_id)->first();
                                         ?>
-                                        {{ $persona->direccion }},
+                                        <br>
+                                        <small>{{ $persona->direccion }}</small>,
                                         <br>
                                         {{ $departamento->name }}, {{ $municipio->name }}
                                     </td>
@@ -337,7 +339,7 @@
                                         <strong>Lugar de Votacion:</strong>
                                         <br>
                                         <strong>Estado de Apoyo:</strong>
-                                        {{ $estado->name }} <a href="javascript:void(0);" class="text-decoration-none text-light" data-tooltip="tooltip" title="Editar Estado de Apoyo" data-toggle="modal" data-target="#formEditEstado"><i class="far fa-edit"></i></a>
+                                        {{ $estado->name }} <a href="javascript:void(0);" class="text-decoration-none text-light" data-tooltip="tooltip" title="Editar Estado de Apoyo" data-toggle="modal" data-target="#formEditEstado{{ $persona->id }}"><i class="far fa-edit"></i></a>
                                     </td>
                                     <td class="text-right">
                                         <div class="dropdown">
@@ -345,16 +347,74 @@
                                             <i class="fas fa-ellipsis-v"></i>
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                                <a id="buttonEliminar" class="dropdown-item" href="javascript:void(0);">Eliminar</a>
+                                                <a class="dropdown-item" href="javascript:void(0);" data-toggle="modal" data-target="#eliminarPersona{{ $persona->id }}">Eliminar</a>
                                                 <a href="{{ route('editarPersona', $persona->id) }}" class="dropdown-item">Editar</a>
                                             </div>
                                         </div>
                                     </td>
                                 </tr>
                                 @endforeach
-                                <input id="inputEliminar" hidden type="text" value="{{ route('eliminarPersona') }}">
-                                <input id="inputId" hidden type="text" value="{{ $persona->id }}">
                             </tbody>
+                            @foreach($personas as $persona)
+                            <!-- Form Edit Estado -->
+                            <div class="modal fade" id="formEditEstado{{ $persona->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <form action="{{ route('updatePersona', $persona->id) }}" method="POST">
+                                        @csrf
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Cambiar estado de {{ $persona->nombre }} {{ $persona->apellidos }}</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <select name="estado_apoyo_id" class="form-control">';
+                                                            @foreach ($estado_apoyo as $estado)
+                                                                @if($estado->id == $persona->estado_apoyo_id)
+                                                                    <option value="{{ $estado->id }}" selected>{{ $estado->name }}</option>
+                                                                @else
+                                                                    <option value="{{ $estado->id }}">{{ $estado->name }}</option>
+                                                                @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                                <button type="submit" class="btn btn-primary">Actualizar Estado</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- Modal Eliminar Persona-->
+                            <div class="modal fade" id="eliminarPersona{{ $persona->id }}" tabindex="-1" role="dialog" aria-labelledby="modalElimianrPersonaLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="text-center p-5">
+                                            <h1>¿Esta seguro?</h1>
+                                                Si de verdad desea eliminar a<br><b>{{ $persona->nombre }} {{ $persona->apellidos }}</b>
+                                                <br>
+                                                pulse <b>Confirmar.</b>
+                                                <hr class="my-5">
+                                                <form action="{{ route('eliminarPersona', $persona->id) }}" method="POST">
+                                                    @csrf
+                                                    <div class="form-group row justify-content-center">
+                                                        <div class="col-md-12">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                                            <button type="submit" class="btn btn-primary">Confirmar</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
                         </table>
                         @else
                         <table class="table align-items-center table-dark">

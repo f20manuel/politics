@@ -234,7 +234,8 @@ class PersonaController extends Controller
                         <strong>E-Mail:</strong> '.$persona->email.'
                         <br>
                         <strong>Dirección:</strong>
-                        '.$persona->direccion.',
+                        <br>
+                        <small>'.$persona->direccion.'</small>,
                         <br>
                         '.$departamento->name.', '.$municipio->name.'
                     </td>
@@ -248,70 +249,38 @@ class PersonaController extends Controller
                         <strong>Lugar de Votacion:</strong>
                         <br>
                         <strong>Estado de Apoyo:</strong>
-                        '.$estado->name.' <a href="javascript:void(0);" class="text-decoration-none text-light" data-tooltip="tooltip" title="Editar Estado de Apoyo" data-toggle="modal" data-target="#formEditEstado"><i class="far fa-edit"></i></a>
-
-                        <!-- Form Edit Estado -->
-                        <div class="modal fade" id="formEditEstado" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                            <form action="/editar-estado" method="POST" class="modal-content">
-                                token aquí...
-                                <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Cambiar estado de '.$persona->nombre.' '.$persona->apellidos.'</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                                </div>
-                                <div class="modal-body">
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <input type="number" name="persona_id" value="'.$persona->id.'" hidden>
-                                        <select name="estado_apoyo_id" class="form-control">';
-                                            foreach ($estado_apoyo as $estado){
-                                                if($estado->id == $persona->estado_apoyo_id){
-                                                    echo '<option value="'.$estado->id.'" selected>'.$estado->name.'</option>';
-                                                }else{
-                                                    echo '<option value="'.$estado->id.'">'.$estado->name.'</option>';
-                                                }
-                                            }
-                                        echo '</select>
-                                    </div>
-                                </div>
-                                </div>
-                                <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                <button type="burron" class="btn btn-primary">Actualizar Estado</button>
-                                </div>
-                            </form>
+                        '.$estado->name.' <a href="javascript:void(0);" class="text-decoration-none text-light" data-tooltip="tooltip" title="Editar Estado de Apoyo" data-toggle="modal" data-target="#formEditEstado'.$persona->id.'"><i class="far fa-edit"></i></a>
+                    </td>
+                    <td class="text-right">
+                        <div class="dropdown">
+                            <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                <a id="buttonEliminar" class="dropdown-item" href="javascript:void(0);" data-toggle="modal" data-target="#eliminarPersona'.$persona->id.'">Eliminar</a>
+                                <a href="/public/persona/'.$persona->id.'/edit" class="dropdown-item">Editar</a>
                             </div>
                         </div>
                     </td>
-            <td class="text-right">
-                <div class="dropdown">
-                    <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-ellipsis-v"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                        <a id="buttonEliminar" class="dropdown-item" href="javascript:void(0);">Eliminar</a>
-                        <a href="/public/persona/'.$persona->id.'/edit" class="dropdown-item">Editar</a>
-                    </div>
-                </div>
-            </td>
-        </tr>';
+                </tr>';
         }
     }
 
-    public function updateEstado(Request $request)
+    public function updateEstado(Request $request, Persona $persona)
     {
         $estado = $request->input('estado_apoyo_id');
-
-        $persona = Persona::find($request->input('persona_id'));
         $estado_actual = EstadoApoyo::where('id', $estado)->first();
-        $persona->whereId($request->input('persona_id'))->update([
-            'estado_apoyo_id' => $estado
+        $editar = $persona->update([
+            'estado_apoyo_id' => $estado_actual->id
         ]);
 
-        alert()->success('Estado de apoyo de '.$persona->nombre.' '.$persona->apellidos.' cambiado a '.$estado_actual->name, 'Estado Cambiado');
-        return back();
+        if($editar){
+            alert()->success('Estado de apoyo de '.$persona->nombre.' '.$persona->apellidos.' cambiado a '.$estado_actual->name, 'Estado Cambiado');
+            return back();
+        }else{
+            alert()->error('Algo ha ocurrido mal, por favor intente de nuevo', '¡Ups!');
+            return back();
+        }
     }
 
     public function update(Request $request, Persona $persona)
@@ -330,11 +299,11 @@ class PersonaController extends Controller
         return redirect()->route('personas');
     }
 
-    public function eliminar(Request $request)
+    public function eliminar(Persona $persona)
     {
-        $persona = Persona::findOrFail($request->input('id'));
-        alert()->success('¡Persona borrada con exito!');
         $persona->delete();
+        alert()->success('¡'.$persona->nombre.' '.$persona->apellidos.' ha sido borrad@ con exito!');
+        return back();
     }
 
     public function ImportarExcel(Request $request)
