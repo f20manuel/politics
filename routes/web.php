@@ -17,9 +17,25 @@ Route::get('/', function () {
 
 Route::get('/dashboard/personas', 'PersonaController@index')->name('personas');
 
-Route::get('/search/personas', 'PersonaController@searchByDNI')->name('searchPersonas');
+Route::post('/search/personas', 'PersonaController@search')->name('searchPersonas');
 
 Route::get('/exportar-personas', 'PersonaController@ExportarExcel')->name('expersonas');
+
+Route::post('/importar-personas', 'PersonaController@ImportarExcel')->name('inpersonas');
+
+Route::post('/guardar-personas', 'PersonaController@Guardar')->name('guardarPersonas');
+
+Route::post('/editar-estado', 'PersonaController@updateEstado')->name('updatePersona');
+
+Route::post('/editar-persona', 'PersonaController@update')->name('updatePersona2');
+
+Route::get('/persona/{persona}/edit', 'PersonaController@edit')->name('editarPersona');
+
+Route::post('/eliminarPersona', 'PersonaController@eliminar')->name('eliminarPersona');
+
+//selects en Personas, lideres y testigos
+Route::post('/enviarDepartamento', 'PersonaController@selectDepartamento')->name('enviarDepartamento');
+Route::post('/enviarMunicipio', 'PersonaController@selectMunicipio')->name('enviarMunicipio');
 
 Auth::routes();
 

@@ -19,28 +19,28 @@ class CreatePersonasTable extends Migration
             $table->string('nombre');
             $table->string('apellidos');
             $table->string('celular')->unique();
-            $table->string('telefonos')->unique();
+            $table->string('telefonos')->unique()->nullable();
             $table->string('email')->unique()->nullable();
             $table->unsignedBigInteger('comuna_id')->nullable();
             $table->unsignedBigInteger('lider_id')->nullable();
             $table->unsignedBigInteger('lugar_votacion_id')->nullable();
-           
+
            //Información de Recidencia
             $table->unsignedBigInteger('departamento_id')->nullable();
             $table->unsignedBigInteger('municipio_id')->nullable();
             $table->unsignedBigInteger('barrio_id')->nullable();
             $table->longText('direccion')->nullable();
-            
+
             //Información personal
-            $table->unsignedBigInteger('genero_id');
-            $table->date('fecha_nacimiento');
-            $table->unsignedBigInteger('ocupacion_id');
-            $table->unsignedBigInteger('nivel_academico_id');
-            $table->unsignedBigInteger('estado_apoyo_id');
-            $table->longText('observacion');
-            
+            $table->unsignedBigInteger('genero_id')->nullable();
+            $table->date('fecha_nacimiento')->nullable();
+            $table->unsignedBigInteger('ocupacion_id')->nullable();
+            $table->unsignedBigInteger('nivel_academico_id')->nullable();
+            $table->unsignedBigInteger('estado_apoyo_id')->nullable();
+            $table->longText('observacion')->nullable();
+
             $table->timestamps();
-            
+
             //Claves foraneas
             $table->foreign('comuna_id')->references('id')->on('comunas')->onDelete('cascade');
             $table->foreign('lider_id')->references('id')->on('liders')->onDelete('cascade');

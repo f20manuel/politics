@@ -15,13 +15,17 @@ class NivelAcademicoTableSeeder extends Seeder
         $nivel = new NivelAcademico();
         $nivel->name = 'Universitario';
         $nivel->save();
-        
+
         $nivel = new NivelAcademico();
         $nivel->name = 'Bachiller';
         $nivel->save();
-        
+
         $nivel = new NivelAcademico();
         $nivel->name = 'Primaria';
+        $nivel->save();
+
+        $nivel = new NivelAcademico();
+        $nivel->name = 'Ninguno';
         $nivel->save();
     }
 }

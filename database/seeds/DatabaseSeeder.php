@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
         $this->call([UsersTableSeeder::class,
             DepartamentosTableSeeder::class,
             MunicipiosTableSeeder::class,
+            ComunasTableSeeder::class,
             EstadoApoyoTableSeeder::class,
             OcupacionTableSeeder::class,
             NivelAcademicoTableSeeder::class,
