@@ -27,32 +27,12 @@ class MunicipiosTableSeeder extends Seeder
         $municipio->save();
 
         $municipio = new Municipio;
-        $municipio->name = 'Alpujarra';
-        $municipio->departamento_id = $tolima->id;
-        $municipio->save();
-
-        $municipio = new Municipio;
-        $municipio->name = 'Alvarado';
-        $municipio->departamento_id = $tolima->id;
-        $municipio->save();
-
-        $municipio = new Municipio;
         $municipio->name = 'Alvarado';
         $municipio->departamento_id = $tolima->id;
         $municipio->save();
 
         $municipio = new Municipio;
         $municipio->name = 'Ambalema';
-        $municipio->departamento_id = $tolima->id;
-        $municipio->save();
-
-        $municipio = new Municipio;
-        $municipio->name = 'Ambalema';
-        $municipio->departamento_id = $tolima->id;
-        $municipio->save();
-
-        $municipio = new Municipio;
-        $municipio->name = 'Anzoátegui';
         $municipio->departamento_id = $tolima->id;
         $municipio->save();
 

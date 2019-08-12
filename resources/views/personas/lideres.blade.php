@@ -2,7 +2,7 @@
 @section('breadcrumb')
     <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="{{ route('home') }}">Escritorio</a>
     <p class="h4 text-white mb-1 mx-2">|</p>
-    <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block disabled" href="javascript:void(0)">Personas</a>
+    <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block disabled" href="javascript:void(0)">Lideres</a>
 @endsection
 @section('content')
 <div class="header bg-gradient-primary py-7 py-lg-8">
@@ -10,7 +10,7 @@
         <div class="header-body text-center mb-3">
             <div class="row justify-content-center">
                 <div class="col-lg-5 col-md-6">
-                    <h1 class="text-white">Gestión de Personas</h1>
+                    <h1 class="text-white">Gestión de Lideres</h1>
                 </div>
             </div>
         </div>
@@ -22,22 +22,22 @@
                     <div>
                         <div class="row mx-0 align-items-center">
                             <div class="col-sm-12 text-center mb-4">
-                                <nav @if($personas->lastPage() >= 23) style="width: 100%; padding-left: 75%; overflow-y: scroll;" @endif() aria-label="Page navigation example">
+                                <nav @if($lideres->lastPage() >= 23) style="width: 100%; padding-left: 75%; overflow-y: scroll;" @endif() aria-label="Page navigation example">
                                   <ul class="pagination justify-content-center">
-                                    @if($personas->total() >= 10)
-                                    <li class="page-item @if($personas->onFirstPage() == 1) disabled @endif">
-                                      <a class="page-link" href="{{ $personas->previousPageUrl() }}">
+                                    @if($lideres->total() >= 10)
+                                    <li class="page-item @if($lideres->onFirstPage() == 1) disabled @endif">
+                                      <a class="page-link" href="{{ $lideres->previousPageUrl() }}">
                                         <i class="fa fa-angle-left"></i>
                                         <span class="sr-only">Anterior</span>
                                       </a>
                                     </li>
-                                    @for($i=1; $i<=$personas->lastPage(); $i++)
-                                    <li class="page-item @if($personas->currentPage() == $i) active @endif()">
-                                        <a class="page-link" href="{{ $personas->url($i) }}">{{ $i }}</a>
+                                    @for($i=1; $i<=$lideres->lastPage(); $i++)
+                                    <li class="page-item @if($lideres->currentPage() == $i) active @endif()">
+                                        <a class="page-link" href="{{ $lideres->url($i) }}">{{ $i }}</a>
                                     </li>
                                     @endfor
                                     <li class="page-item">
-                                      <a class="page-link @if($personas->currentPage() == $personas->lastPage()) disabled @endif" href="{{ $personas->nextPageUrl() }}">
+                                      <a class="page-link @if($lideres->currentPage() == $lideres->lastPage()) disabled @endif" href="{{ $lideres->nextPageUrl() }}">
                                         <i class="fa fa-angle-right"></i>
                                         <span class="sr-only">Siguiente</span>
                                       </a>
@@ -48,7 +48,7 @@
                             </div>
 
                             <div class="col-md-8 pl-0 mb-2">
-                                <a href="{{ route('expersonas') }}">
+                                <a href="{{ route('exlideres') }}">
                                 <button class="btn btn-icon mr-2 btn-3 btn-secondary" type="sutmit">
                                 	<span class="btn-inner--icon"><i class="fas fa-file-excel"></i></span>
 
@@ -76,8 +76,8 @@
                                                         <div class="modal-body">
                                                             <div class="row">
                                                                 <div class="col-sm-12">
-                                                                    <input type="file" id="importarExcel" name="importarExcel" class="form-control" accept=".xlsx, .csv, .ods" required>
-                                                                    <small>Sólo archivos *.xlsx</small>
+                                                                    <input type="file" id="importarExcel" name="importarExcel" class="form-control" accept=".ods" required>
+                                                                    <small>Sólo archivos *ods</small>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -90,35 +90,35 @@
                                             </div>
       </div>
                                 </form>
-                                <span class="text-white">{{ $personas->total() }}
-                                    @switch($personas->total())
+                                <span class="text-white">{{ $lideres->total() }}
+                                    @switch($lideres->total())
                                         @case(1)
-                                            Persona Registrada
+                                            Lider Registrado
                                             @break
                                         @default
-                                            Personas Registradas
+                                            Lideres Registrados
                                     @endswitch</span>
                             </div>
                             <div class="col-md-3 px-0 mb-2">
                                 <div class="input-group input-group-alternative">
-                                    <input class="form-control" placeholder="Buscar Número de Documento en Personas" name="search" type="text">
+                                    <input class="form-control" placeholder="Buscar Lideres" name="search" type="text">
                                     <div class="input-group-append">
                                     <div class="input-group-text"><i class="fas fa-search"></i></div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-1 mb-2 px-0 text-right">
-                                <button class="btn btn-icon btn-2 mr-0 btn-default" data-toggle="modal" data-tooltip="tooltip" data-target="#agregarPersona" data-placement="top" title="Agregar Persona" type="button">
+                                <button class="btn btn-icon btn-2 mr-0 btn-default" data-toggle="modal" data-tooltip="tooltip" data-target="#agregarLider" data-placement="top" title="Agregar Lider" type="button">
                                 	<span class="btn-inner--icon"><i class="ni ni-fat-add"></i></span>
                                 </button>
 
                                 <!-- Formulario para agregar personas -->
-                                <div class="modal fade" id="agregarPersona" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="agregarLider" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                                    <form class="modal-content" action="{{ route('guardarPersonas') }}" method="POST">
+                                    <form class="modal-content" action="{{ route('guardarLider') }}" method="POST">
                                       @csrf
                                       <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-users fa-2x align-middle mr-2"></i>Agregar Personas</h4>
+                                        <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-user-shield fa-2x align-middle mr-2"></i>Agregar Lider</h4>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                           <span aria-hidden="true">&times;</span>
                                         </button>
@@ -274,7 +274,7 @@
                                 </div>
                             </div>
                         </div>
-                        @if($personas->total() > 0)
+                        @if($lideres->total() > 0)
                         <table class="table align-items-center table-dark">
                             <thead class="thead-dark">
                                 <tr>
@@ -295,55 +295,55 @@
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody id="foreachPersonaSearch" class="list">
-                                @foreach($personas as $persona)
+                            <tbody id="foreachLiderSearch" class="list">
+                                @foreach($lideres as $lider)
                                 <tr>
                                     <th scope="row" class="budget">
                                         <div class="media align-items-center">
                                             <div class="media-body">
                                                 <span class="mb-0 text-sm">
-                                                    <h1 class="text-white mb-0"><i class="ni ni-badge"></i> <b>id: </b>{{ $persona->id }}</h1>
-                                                    CC. {{ number_format($persona->cc, 0, ',', '.') }}</span>
+                                                    <h1 class="text-white mb-0"><i class="ni ni-badge"></i> <b>id: </b>{{ $lider->id }}</h1>
+                                                    CC. {{ number_format($lider->cc, 0, ',', '.') }}</span>
                                             </div>
                                         </div>
                                     </th>
                                     <td class="name">
-                                        <strong>Nombres:</strong> {{ $persona->nombre }}
+                                        <strong>Nombres:</strong> {{ $lider->nombre }}
                                         <br>
-                                        <strong>Apellidos:</strong> {{ $persona->apellidos }}
+                                        <strong>Apellidos:</strong> {{ $lider->apellidos }}
                                         <br>
-                                        <strong>Edad:</strong> {{ date('Y') - $persona->fecha_nacimiento->format('Y') }} años
+                                        <strong>Edad:</strong> {{ date('Y') - $lider->fecha_nacimiento->format('Y') }} años
                                         <br>
-                                        <strong>Nacimiento:</strong> {{ $persona->fecha_nacimiento->format('d/m/Y') }}
+                                        <strong>Nacimiento:</strong> {{ $lider->fecha_nacimiento->format('d/m/Y') }}
                                     </td>
                                     <td class="name">
-                                        <strong>Celular:</strong> {{ $persona->celular }}
+                                        <strong>Celular:</strong> {{ $lider->celular }}
                                         <br>
-                                        <strong>Telefonos:</strong> {{ $persona->telefonos }}
+                                        <strong>Telefonos:</strong> {{ $lider->telefonos }}
                                         <br>
-                                        <strong>E-Mail:</strong> {{ $persona->email }}
+                                        <strong>E-Mail:</strong> {{ $lider->email }}
                                         <br>
                                         <strong>Dirección:</strong>
                                         <?php
-                                            $departamento = $departamentos->where('id', $persona->departamento_id)->first();
-                                            $municipio = $municipios->where('id', $persona->municipio_id)->first();
+                                            $departamento = $departamentos->where('id', $lider->departamento_id)->first();
+                                            $municipio = $municipios->where('id', $lider->municipio_id)->first();
                                         ?>
                                         <br>
-                                        <small>{{ $persona->direccion }}</small>,
+                                        <small>{{ $lider->direccion }}</small>,
                                         <br>
                                         {{ $departamento->name }}, {{ $municipio->name }}
                                     </td>
                                     <td class="name">
                                         <?php
-                                            $estado = $estado_apoyo->where('id', $persona->estado_apoyo_id)->first();
-                                            $comuna = $comuna_id->where('id', $persona->comuna_id)->first();
+                                            $estado = $estado_apoyo->where('id', $lider->estado_apoyo_id)->first();
+                                            $comuna = $comuna_id->where('id', $lider->comuna_id)->first();
                                         ?>
                                         <strong>Comuna: </strong> @if($comuna){{ $comuna->name }}@endif
                                         <br>
                                         <strong>Lugar de Votacion:</strong>
                                         <br>
                                         <strong>Estado de Apoyo:</strong>
-                                        {{ $estado->name }} <a href="javascript:void(0);" class="text-decoration-none text-light" data-tooltip="tooltip" title="Editar Estado de Apoyo" data-toggle="modal" data-target="#formEditEstado{{ $persona->id }}"><i class="far fa-edit"></i></a>
+                                        {{ $estado->name }} <a href="javascript:void(0);" class="text-decoration-none text-light" data-tooltip="tooltip" title="Editar Estado de Apoyo" data-toggle="modal" data-target="#formEditEstado{{ $lider->id }}"><i class="far fa-edit"></i></a>
                                     </td>
                                     <td class="text-right">
                                         <div class="dropdown">
@@ -351,19 +351,19 @@
                                             <i class="fas fa-ellipsis-v"></i>
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                                <a class="dropdown-item" href="javascript:void(0);" data-toggle="modal" data-target="#eliminarPersona{{ $persona->id }}">Eliminar</a>
-                                                <a href="{{ route('editarPersona', $persona->id) }}" class="dropdown-item">Editar</a>
+                                                <a class="dropdown-item" href="javascript:void(0);" data-toggle="modal" data-target="#eliminarLider{{ $lider->id }}">Eliminar</a>
+                                                <a href="{{ route('editarlider', $lider->id) }}" class="dropdown-item">Editar</a>
                                             </div>
                                         </div>
                                     </td>
                                 </tr>
                                 @endforeach
                             </tbody>
-                            @foreach($personas as $persona)
+                            @foreach($lideres as $persona)
                             <!-- Form Edit Estado -->
-                            <div class="modal fade" id="formEditEstado{{ $persona->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="formEditEstado{{ $lider->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <form action="{{ route('updatePersona', $persona->id) }}" method="POST">
+                                    <form action="{{ route('updateEstadoLider', $persona->id) }}" method="POST">
                                         @csrf
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -395,17 +395,17 @@
                                     </form>
                                 </div>
                             </div>
-                            <!-- Modal Eliminar Persona-->
-                            <div class="modal fade" id="eliminarPersona{{ $persona->id }}" tabindex="-1" role="dialog" aria-labelledby="modalElimianrPersonaLabel" aria-hidden="true">
+                            <!-- Modal Eliminar lider-->
+                            <div class="modal fade" id="eliminarLider{{ $lider->id }}" tabindex="-1" role="dialog" aria-labelledby="modalElimianrPersonaLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
                                         <div class="text-center p-5">
                                             <h1>¿Esta seguro?</h1>
-                                                Si de verdad desea eliminar a<br><b>{{ $persona->nombre }} {{ $persona->apellidos }}</b>
+                                                Si de verdad desea eliminar a<br><b>{{ $lider->nombre }} {{ $lider->apellidos }}</b>
                                                 <br>
                                                 pulse <b>Confirmar.</b>
                                                 <hr class="my-5">
-                                                <form action="{{ route('eliminarPersona', $persona->id) }}" method="POST">
+                                                <form action="{{ route('eliminarLider', $persona->id) }}" method="POST">
                                                     @csrf
                                                     <div class="form-group row justify-content-center">
                                                         <div class="col-md-12">
@@ -432,22 +432,22 @@
                         </table>
                     @endif
                 </div>
-                                <nav @if($personas->lastPage() >= 23) style="width: 100%; padding-left: 75%; overflow-y: scroll;" @endif() aria-label="Page navigation example">
+                                <nav @if($lideres->lastPage() >= 23) style="width: 100%; padding-left: 75%; overflow-y: scroll;" @endif() aria-label="Page navigation example">
                                   <ul class="pagination justify-content-center">
-                                    @if($personas->total() >= 10)
-                                    <li class="page-item @if($personas->onFirstPage() == 1) disabled @endif">
-                                      <a class="page-link" href="{{ $personas->previousPageUrl() }}">
+                                    @if($lideres->total() >= 10)
+                                    <li class="page-item @if($lideres->onFirstPage() == 1) disabled @endif">
+                                      <a class="page-link" href="{{ $lideres->previousPageUrl() }}">
                                         <i class="fa fa-angle-left"></i>
                                         <span class="sr-only">Anterior</span>
                                       </a>
                                     </li>
-                                    @for($i=1; $i<=$personas->lastPage(); $i++)
-                                    <li class="page-item @if($personas->currentPage() == $i) active @endif()">
-                                        <a class="page-link" href="{{ $personas->url($i) }}">{{ $i }}</a>
+                                    @for($i=1; $i<=$lideres->lastPage(); $i++)
+                                    <li class="page-item @if($lideres->currentPage() == $i) active @endif()">
+                                        <a class="page-link" href="{{ $lideres->url($i) }}">{{ $i }}</a>
                                     </li>
                                     @endfor
                                     <li class="page-item">
-                                      <a class="page-link @if($personas->currentPage() == $personas->lastPage()) disabled @endif" href="{{ $personas->nextPageUrl() }}">
+                                      <a class="page-link @if($lideres->currentPage() == $lideres->lastPage()) disabled @endif" href="{{ $lideres->nextPageUrl() }}">
                                         <i class="fa fa-angle-right"></i>
                                         <span class="sr-only">Siguiente</span>
                                       </a>
@@ -461,7 +461,7 @@
             </div>
         </div>
     </div>
-    <div class="separator separator-bottom separator-skew zindex-100">
+    <div class="separator fixed-botto separator-bottom separator-skew zindex-100">
         <svg x="0" y="0" viewBox="0 0 2560 100" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
             <polygon class="fill-default" points="2560 0 2560 100 0 100"></polygon>
         </svg>

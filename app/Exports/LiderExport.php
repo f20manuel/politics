@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Persona;
+use App\Lider;
 use App\Genero;
 use App\Departamento;
 use App\Municipio;
@@ -15,12 +15,12 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 
-class PersonasExport implements FromView
+class LiderExport implements FromView
 {
     public function view(): View
     {
-        return view('personas.personasExport', [
-            'personas' => Persona::all(),
+        return view('personas.lideresExport', [
+            'lideres' => Lider::all(),
             'generos' => Genero::all(),
             'departamentos' => Departamento::all(),
             'municipios' => Municipio::all(),

@@ -8,18 +8,36 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col">
-                                    <h5 class="card-title text-uppercase text-muted mb-0">Traffic</h5>
-                                    <span class="h2 font-weight-bold mb-0">350,897</span>
+                                    <h5 class="card-title text-uppercase text-muted mb-0">Personas</h5>
+                                    <span class="h2 font-weight-bold mb-0">{{ $personas->count() }}
+                                        @if ($personas->count() == 1)
+                                            <small>Registrado</small>
+                                        @else
+                                            <small>Registrados</small>
+                                        @endif
+                                    </span>
                                 </div>
                                 <div class="col-auto">
-                                    <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
-                                        <i class="fas fa-chart-bar"></i>
+                                    <div class="icon icon-shape bg-success text-white rounded-circle shadow">
+                                        <i class="fas fa-users"></i>
                                     </div>
                                 </div>
                             </div>
                             <p class="mt-3 mb-0 text-muted text-sm">
-                                <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>
-                                <span class="text-nowrap">Since last month</span>
+                                @if($comprometidas->count() == 0)
+                                @elseif($comprometidas->count() == 1)
+                                    <span class="text-danger mr-2"><i class="fas fa-users mr-2"></i>{{ number_format($comprometidas->count() * 100 / $personas->count(), 2) }}%</span>
+                                    <span class="text-danger">Comprometido</span>
+                                @elseif ($comprometidas->count() > 0 and $comprometidas->count() < 5)
+                                    <span class="text-danger mr-2"><i class="fas fa-users mr-2"></i>{{ number_format($comprometidas->count() * 100 / $personas->count(), 2) }}%</span>
+                                    <span class="text-danger">Comprometidos</span>
+                                @elseif($comprometidas->count() > 0 and $comprometidas->count() < 10)
+                                    <span class="text-warning mr-2"><i class="fas fa-users mr-2"></i>{{ number_format($comprometidas->count() * 100 / $personas->count(), 2) }}%</span>
+                                    <span class="text-warning">Comprometidos</span>
+                                @else
+                                    <span class="text-success mr-2"><i class="fas fa-users mr-2"></i>{{ number_format($comprometidas->count() * 100 / $personas->count(), 2) }}%</span>
+                                    <span class="text-success">Comprometidos</span>
+                                @endif
                             </p>
                         </div>
                     </div>
@@ -29,18 +47,36 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col">
-                                    <h5 class="card-title text-uppercase text-muted mb-0">New users</h5>
-                                    <span class="h2 font-weight-bold mb-0">2,356</span>
+                                    <h5 class="card-title text-uppercase text-muted mb-0">Lideres</h5>
+                                    <span class="h2 font-weight-bold mb-0">{{ $lider->count() }}
+                                        @if ($lider->count() == 1)
+                                            <small>Registrado</small>
+                                        @else
+                                            <small>Registrados</small>
+                                        @endif
+                                    </span>
                                 </div>
                                 <div class="col-auto">
-                                    <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
-                                        <i class="fas fa-chart-pie"></i>
+                                    <div class="icon icon-shape bg-success text-white rounded-circle shadow">
+                                        <i class="fas fa-user-shield"></i>
                                     </div>
                                 </div>
                             </div>
                             <p class="mt-3 mb-0 text-muted text-sm">
-                                <span class="text-danger mr-2"><i class="fas fa-arrow-down"></i> 3.48%</span>
-                                <span class="text-nowrap">Since last week</span>
+                                @if($lcom->count() == 0)
+                                @elseif($lcom->count() == 1)
+                                    <span class="text-danger mr-2"><i class="fas fa-user-shield mr-2"></i>{{ number_format($lcom->count() * 100 / $lider->count(), 2) }}%</span>
+                                    <span class="text-danger">Comprometido</span>
+                                @elseif ($lcom->count() > 0 and $lcom->count() < 5)
+                                    <span class="text-danger mr-2"><i class="fas fa-user-shield mr-2"></i>{{ number_format($lcom->count() * 100 / $lider->count(), 2) }}%</span>
+                                    <span class="text-danger">Comprometidos</span>
+                                @elseif($lcom->count() > 0 and $lcom->count() < 10)
+                                    <span class="text-warning mr-2"><i class="fas fa-user-shield mr-2"></i>{{ number_format($lcom->count() * 100 / $lider->count(), 2) }}%</span>
+                                    <span class="text-warning">Comprometidos</span>
+                                @else
+                                    <span class="text-success mr-2"><i class="fas fa-user-shield mr-2"></i>{{ number_format($lcom->count() * 100 / $lider->count(), 2) }}%</span>
+                                    <span class="text-success">Comprometidos</span>
+                                @endif
                             </p>
                         </div>
                     </div>

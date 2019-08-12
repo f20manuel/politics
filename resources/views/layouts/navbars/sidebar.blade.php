@@ -80,6 +80,11 @@
                         <i class="fas fa-users text-primary"></i> Personas
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('lideres') }}">
+                        <i class="fas fa-user-shield text-primary"></i> Lideres
+                    </a>
+                </li>
             </ul>
             <!-- Divider -->
             <hr class="my-3">
@@ -94,7 +99,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="https://wa.me/3212212768" target="_blank">
-                        <i class="fab fa-whatsapp"></i> WhastApp 
+                        <i class="fab fa-whatsapp"></i> WhastApp
                     </a>
                 </li>
                 <li class="nav-item">

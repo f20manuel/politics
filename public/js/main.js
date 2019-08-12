@@ -14,6 +14,19 @@ $(document).ready(
                 });
         }
 
+        function buscarLider() {
+            var search = $('input[name="search"]').val();
+                $.ajax({
+                    url: '/search/lideres',
+                    type: 'POST',
+                    data: {search:search},
+                    success: function(data)
+                    {
+                        $('#foreachLiderSearch').html(data);
+                    }
+                });
+        }
+
         //Buscar Personas
         $('input[name="search"]').change(
             function(e)
@@ -28,6 +41,23 @@ $(document).ready(
             {
                 e.preventDefault();
                 buscar();
+            }
+        )
+
+        //Buscar Lideres
+        $('input[name="search"]').change(
+            function(e)
+            {
+                e.preventDefault();
+                buscarLider();
+            }
+        )
+
+        $('input[name="search"]').keyup(
+            function(e)
+            {
+                e.preventDefault();
+                buscarLider();
             }
         )
 

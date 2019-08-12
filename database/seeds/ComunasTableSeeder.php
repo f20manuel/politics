@@ -14,6 +14,10 @@ class ComunasTableSeeder extends Seeder
      */
     public function run()
     {
+        //Todos los departamentos
+        $departamentos = Departamento::all();
+        $municipios = Municipio::all();
+
         //Tolima
         $tolima = Departamento::where('name', 'Tolima')->first();
         $ibague = Municipio::where('name', 'Ibagué')->first();
@@ -131,10 +135,16 @@ class ComunasTableSeeder extends Seeder
         $comuna->municipio_id = $ibague->id;
         $comuna->save();
 
-        $comuna = new Comuna();
-        $comuna->name = 'Ninguna';
-        $comuna->departamento_id = $tolima->id;
-        $comuna->municipio_id = $ibague->id;
-        $comuna->save();
+        for($m=1; $m<=$municipios->count(); $m++)
+        {
+            for($d=1; $d<=$departamentos->count(); $d++)
+            {
+                $comuna = new Comuna();
+                $comuna->name = 'Ninguna';
+                $comuna->departamento_id = $d;
+                $comuna->municipio_id = $m;
+                $comuna->save();
+            }
+        }
     }
 }

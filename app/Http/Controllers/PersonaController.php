@@ -36,7 +36,7 @@ class PersonaController extends Controller
 
     public function index()
     {
-        $personas = Persona::paginate(500);
+        $personas = Persona::orderBy('id', 'desc')->paginate(500);
 
         $generos = Genero::all();
         $ningunGenero = $generos->last();
@@ -197,72 +197,82 @@ class PersonaController extends Controller
                             ->orWhere('apellidos', 'LIKE', '%'.$search.'%')
                             ->orWhere('direccion', 'LIKE', '%'.$search.'%')
                             ->paginate(10);
-
-        foreach($personas as $persona){
-            $fecha_cumpleanos = date('Y') - $persona->fecha_nacimiento->format('Y');
-            $estado_apoyo = EstadoApoyo::all();
-            $departamento = Departamento::where('id', $persona->departamento_id)->first();
-            $municipio = Municipio::where('id', $persona->municipio_id)->first();
-            $estado = EstadoApoyo::where('id', $persona->estado_apoyo_id)->first();
-            $comuna = Comuna::where('id', $persona->comuna_id)->first();
+        if($personas)
+        {
+            foreach($personas as $persona){
+                $fecha_cumpleanos = date('Y') - $persona->fecha_nacimiento->format('Y');
+                $estado_apoyo = EstadoApoyo::all();
+                $departamento = Departamento::where('id', $persona->departamento_id)->first();
+                $municipio = Municipio::where('id', $persona->municipio_id)->first();
+                $estado = EstadoApoyo::where('id', $persona->estado_apoyo_id)->first();
+                $comuna = Comuna::where('id', $persona->comuna_id)->first();
+                echo '
+                    <tr>
+                        <th scope="row" class="budget">
+                            <div class="media align-items-center">
+                                <div class="media-body">
+                                    <span class="mb-0 text-sm">
+                                        <h1 class="text-white mb-0"><i class="ni ni-badge"></i> <b>id: </b>'.$persona->id.'</h1>
+                                        CC. '.number_format($persona->cc, 0, ',', '.').'
+                                    </span>
+                                </div>
+                            </div>
+                        </th>
+                        <td class="name">
+                            <strong>Nombres:</strong> '.$persona->nombre.'
+                            <br>
+                            <strong>Apellidos:</strong> '.$persona->apellidos.'
+                            <br>
+                            <strong>Edad:</strong> '.$fecha_cumpleanos.' años
+                            <br>
+                            <strong>Nacimiento:</strong> '.$persona->fecha_nacimiento->format('d/m/Y').'
+                        </td>
+                        <td class="name">
+                            <strong>Celular:</strong> '.$persona->celular.'
+                            <br>
+                            <strong>Telefonos:</strong> '.$persona->telefonos.'
+                            <br>
+                            <strong>E-Mail:</strong> '.$persona->email.'
+                            <br>
+                            <strong>Dirección:</strong>
+                            <br>
+                            <small>'.$persona->direccion.'</small>,
+                            <br>
+                            '.$departamento->name.', '.$municipio->name.'
+                        </td>
+                        <td class="name">
+                            <strong>Comuna: </strong> ';
+                            if($comuna){
+                                echo $comuna->name;
+                            }
+                        echo '
+                            <br>
+                            <strong>Lugar de Votacion:</strong>
+                            <br>
+                            <strong>Estado de Apoyo:</strong>
+                            '.$estado->name.' <a href="javascript:void(0);" class="text-decoration-none text-light" data-tooltip="tooltip" title="Editar Estado de Apoyo" data-toggle="modal" data-target="#formEditEstado'.$persona->id.'"><i class="far fa-edit"></i></a>
+                        </td>
+                        <td class="text-right">
+                            <div class="dropdown">
+                                <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-ellipsis-v"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                    <a id="buttonEliminar" class="dropdown-item" href="javascript:void(0);" data-toggle="modal" data-target="#eliminarPersona'.$persona->id.'">Eliminar</a>
+                                    <a href="/public/persona/'.$persona->id.'/edit" class="dropdown-item">Editar</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>';
+            }
+        }else{
             echo '
-                <tr>
-                    <th scope="row" class="budget">
-                        <div class="media align-items-center">
-                            <div class="media-body">
-                                <span class="mb-0 text-sm">
-                                    <h1 class="text-white mb-0"><i class="ni ni-badge"></i> <b>id: </b>'.$persona->id.'</h1>
-                                    CC. '.number_format($persona->cc, 0, ',', '.').'
-                                </span>
-                            </div>
-                        </div>
-                    </th>
-                    <td class="name">
-                        <strong>Nombres:</strong> '.$persona->nombre.'
-                        <br>
-                        <strong>Apellidos:</strong> '.$persona->apellidos.'
-                        <br>
-                        <strong>Edad:</strong> '.$fecha_cumpleanos.' años
-                        <br>
-                        <strong>Nacimiento:</strong> '.$persona->fecha_nacimiento->format('d/m/Y').'
-                    </td>
-                    <td class="name">
-                        <strong>Celular:</strong> '.$persona->celular.'
-                        <br>
-                        <strong>Telefonos:</strong> '.$persona->telefonos.'
-                        <br>
-                        <strong>E-Mail:</strong> '.$persona->email.'
-                        <br>
-                        <strong>Dirección:</strong>
-                        <br>
-                        <small>'.$persona->direccion.'</small>,
-                        <br>
-                        '.$departamento->name.', '.$municipio->name.'
-                    </td>
-                    <td class="name">
-                        <strong>Comuna: </strong> ';
-                        if($comuna){
-                            echo $comuna->name;
-                        }
-                    echo '
-                        <br>
-                        <strong>Lugar de Votacion:</strong>
-                        <br>
-                        <strong>Estado de Apoyo:</strong>
-                        '.$estado->name.' <a href="javascript:void(0);" class="text-decoration-none text-light" data-tooltip="tooltip" title="Editar Estado de Apoyo" data-toggle="modal" data-target="#formEditEstado'.$persona->id.'"><i class="far fa-edit"></i></a>
-                    </td>
-                    <td class="text-right">
-                        <div class="dropdown">
-                            <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-ellipsis-v"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                <a id="buttonEliminar" class="dropdown-item" href="javascript:void(0);" data-toggle="modal" data-target="#eliminarPersona'.$persona->id.'">Eliminar</a>
-                                <a href="/public/persona/'.$persona->id.'/edit" class="dropdown-item">Editar</a>
-                            </div>
-                        </div>
-                    </td>
-                </tr>';
+                <div class="row justify-content-center">
+                    <div class="col-md-12 text-center">
+                        <h1 class="h1 text-white">No se encontraron resultados para "'.$search.'".</h1>
+                    </div>
+                </div>
+            ';
         }
     }
 
@@ -295,8 +305,6 @@ class PersonaController extends Controller
             alert()->error('Lo sentimos ha ocurrido un error', '¡Ups!');
             return redirect()->back();
         }
-
-        return redirect()->route('personas');
     }
 
     public function eliminar(Persona $persona)
@@ -311,6 +319,39 @@ class PersonaController extends Controller
         //return Excel::import(new PersonasImport, $_FILES['importarExcel']['name']);
         Excel::import(new PersonasImport, $request->file('importarExcel'));
         return back();
+    }
+
+    public function ExportarView()
+    {
+        $personas = Persona::all();
+
+        $generos = Genero::all();
+
+        $departamentos = Departamento::all();
+
+        $municipios = Municipio::all();
+
+        $comuna_id = Comuna::all();
+
+        $ocupaciones = Ocupacion::all();
+
+        $niveles_academicos = NivelAcademico::all();
+
+        $estado_apoyo = EstadoApoyo::all();
+
+        $lugar_votacion = LVotacion::all();
+
+            return view('personas.personasExport', compact([
+                'personas',
+                'generos',
+                'departamentos',
+                'municipios',
+                'comuna_id',
+                'ocupaciones',
+                'niveles_academicos',
+                'estado_apoyo',
+                'lugar_votacion'
+            ]));
     }
 
     public function ExportarExcel()

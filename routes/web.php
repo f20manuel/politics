@@ -15,23 +15,32 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Route::get('/dashboard/personas', 'PersonaController@index')->name('personas');
+Route::get('/personas', 'PersonaController@index')->name('personas');
+Route::get('/lideres', 'LiderController@index')->name('lideres');
+
+Route::post('/lideres/guardar', 'LiderController@create')->name('guardarLider');
 
 Route::post('/search/personas', 'PersonaController@search')->name('searchPersonas');
+Route::post('/search/lideres', 'LiderController@search')->name('searchLideres');
 
 Route::get('/exportar-personas', 'PersonaController@ExportarExcel')->name('expersonas');
+Route::get('/exportar-lideres', 'LiderController@ExportarExcel')->name('exlideres');
 
 Route::post('/importar-personas', 'PersonaController@ImportarExcel')->name('inpersonas');
 
 Route::post('/guardar-personas', 'PersonaController@Guardar')->name('guardarPersonas');
 
 Route::post('/editar-estado/{persona}', 'PersonaController@updateEstado')->name('updatePersona');
+Route::post('/editar-estado-lider/{lider}', 'LiderController@updateEstado')->name('updateEstadoLider');
 
-Route::post('/editar-persona', 'PersonaController@update')->name('updatePersona2');
+Route::post('/editar-persona/{persona}', 'PersonaController@update')->name('updatePersona2');
+Route::post('/editar-lider/{lider}', 'LiderController@update')->name('updateLider');
 
 Route::get('/persona/{persona}/edit', 'PersonaController@edit')->name('editarPersona');
+Route::get('/lider/{lider}/edit', 'LiderController@edit')->name('editarlider');
 
 Route::post('/eliminarPersona/{persona}', 'PersonaController@eliminar')->name('eliminarPersona');
+Route::post('/eliminarLider/{id}', 'LiderController@destroy')->name('eliminarLider');
 
 //selects en Personas, lideres y testigos
 Route::post('/enviarDepartamento', 'PersonaController@selectDepartamento')->name('enviarDepartamento');

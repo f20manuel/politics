@@ -13,6 +13,7 @@ class Persona extends Model
         'apellidos',
         'celular',
         'telefonos',
+        'email',
         'comuna_id',
         'lider_id',
         'lugar_votacion_id',
