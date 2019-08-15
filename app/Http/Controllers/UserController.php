@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Http\Requests\UserRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -16,7 +18,9 @@ class UserController extends Controller
      */
     public function index(User $model)
     {
-        return view('users.index', ['users' => $model->paginate(15)]);
+        $roles = Role::all();
+
+        return view('users.index', ['users' => $model->paginate(15), 'roles' => $roles]);
     }
 
     /**
@@ -26,7 +30,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users.create');
+        $roles = Role::all();
+
+        return view('users.create', compact(['roles']));
     }
 
     /**
@@ -36,9 +42,17 @@ class UserController extends Controller
      * @param  \App\User  $model
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(UserRequest $request, User $model)
+    public function store(Request $request, User $model)
     {
-        $model->create($request->merge(['password' => Hash::make($request->get('password'))])->all());
+        $r = $request->input('rol');
+        $rol = Role::where('id', $r)->first();
+
+        $user = $model->create($request->merge(['password' => Hash::make($request->get('password'))])->all());
+
+        $asignarRol = User::find($user->id);
+        $asignarRol->assignRole($rol->name);
+
+        Alert()->success($request->input('name').' ha sido agregado con éxito.', '¡Bien echo!');
 
         return redirect()->route('user.index')->withStatus(__('User successfully created.'));
     }
@@ -67,6 +81,8 @@ class UserController extends Controller
             $request->merge(['password' => Hash::make($request->get('password'))])
                 ->except([$request->get('password') ? '' : 'password']
         ));
+
+        Alert()->success('El usuario '.$user->name.', ha sido editado con éxito', '¡Usuario Editado!');
 
         return redirect()->route('user.index')->withStatus(__('User successfully updated.'));
     }

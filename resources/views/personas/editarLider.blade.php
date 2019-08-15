@@ -1,10 +1,12 @@
 @extends('layouts.app')
 @section('breadcrumb')
-    <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="{{ route('home') }}">Escritorio</a>
-    <p class="h4 text-white mb-1 mx-2">|</p>
-    <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="{{ route('lideres') }}">Lideres</a>
-    <p class="h4 text-white mb-1 mx-2">|</p>
-    <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block disabled" href="javascript:void(0)">Editar a {{ $lider->nombre }} {{ $lider->apellidos }}</a>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ route('home') }}">Escritorio</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('lideres.index') }}">Lideres</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Editar ({{ $lider->nombre }} {{ $lider->apellidos }})</li>
+        </ol>
+    </nav>
 @endsection
 @section('content')
     <div class="header bg-gradient-primary py-7 py-lg-8">
@@ -18,7 +20,7 @@
             </div>
             <div class="row justify-content-center">
                 <div class="col-md-8">
-                    <form class="card" action="{{ route('updateLider', $lider->id) }}" method="POST">
+                    <form class="card" action="{{ route('lideres.update', $lider->id) }}" method="POST">
                         @csrf
                         <div class="card-body">
                             <h2><i class="fas fa-user align-middle mr-2"></i>Información Personal</h2>

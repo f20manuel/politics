@@ -6,7 +6,7 @@
         </button>
         <!-- Brand -->
         <a class="navbar-brand pt-0" href="{{ route('home') }}">
-            <img src="{{ asset('img') }}/brand/logo.png" class="navbar-brand-img" alt="...">
+            <img src="{{ asset('img') }}/brand/logo.png" class="navbar-brand-img" style="min-height: 7rem!important" alt="...">
         </a>
         <!-- User -->
         <ul class="nav align-items-center d-md-none">
@@ -76,37 +76,22 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('personas') }}">
-                        <i class="fas fa-users text-primary"></i> Personas
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('lideres') }}">
+                    <a class="nav-link" href="{{ route('lideres.index') }}">
                         <i class="fas fa-user-shield text-primary"></i> Lideres
                     </a>
                 </li>
-            </ul>
-            <!-- Divider -->
-            <hr class="my-3">
-            <!-- Heading -->
-            <h6 class="navbar-heading text-muted">Soporte Técnico</h6>
-            <!-- Navigation -->
-            <ul class="navbar-nav mb-md-3">
                 <li class="nav-item">
-                    <a class="nav-link" href="https://f20manuel.com" target="_blank">
-                        <i class="ni ni-spaceship"></i> Ing. Manuel Fernández
+                    <a class="nav-link" href="{{ route('personas.index') }}">
+                        <i class="fas fa-users text-primary"></i> Personas
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="https://wa.me/3212212768" target="_blank">
-                        <i class="fab fa-whatsapp"></i> WhastApp
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="https://instagram.com/f20manuel" target="_blank">
-                        <i class="fab fa-instagram"></i> Instagram
-                    </a>
-                </li>
+                @can('users.index')
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('users.index') }}">
+                            <i class="fas fa-users text-primary"></i> Usuarios
+                        </a>
+                    </li>
+                @endcan
             </ul>
         </div>
     </div>

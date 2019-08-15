@@ -1,10 +1,12 @@
 @extends('layouts.app')
 @section('breadcrumb')
-    <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="{{ route('home') }}">Escritorio</a>
-    <p class="h4 text-white mb-1 mx-2">|</p>
-    <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="{{ route('personas') }}">Personas</a>
-    <p class="h4 text-white mb-1 mx-2">|</p>
-    <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block disabled" href="javascript:void(0)">Editar a {{ $persona->nombre }} {{ $persona->apellidos }}</a>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ route('home') }}">Escritorio</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('personas.index') }}">Personas</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Editar ({{ $persona->nombre }} {{ $persona->apellidos }})</li>
+    </ol>
+</nav>
 @endsection
 @section('content')
     <div class="header bg-gradient-primary py-7 py-lg-8">
@@ -18,10 +20,25 @@
             </div>
             <div class="row justify-content-center">
                 <div class="col-md-8">
-                    <form class="card" action="{{ route('updatePersona2', $persona->id) }}" method="POST">
+                    <form class="card" action="{{ route('personas.update', $persona->id) }}" method="POST">
                         @csrf
                         <div class="card-body">
-                            <h2><i class="fas fa-user align-middle mr-2"></i>Información Personal</h2>
+                            <div class="row">
+                                <div class="col-md-6 mb-2">
+                                    <h2><i class="fas fa-user align-middle mr-2"></i>Información Personal</h2>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <select class="form-control" name="lider_id" data-tooltip="tooltip" title="">
+                                        @foreach ($lideres as $lider)
+                                            @if ($lider->id == $persona->lider_id)
+                                                <option value="{{ $lider->id }}" selected>{{ $lider->nombre }} {{ $lider->apellidos }} - C.C. {{ number_format($lider->cc, 0, ',', '.') }}</option>
+                                            @else
+                                                <option value="{{ $lider->id }}">{{ $lider->nombre }} {{ $lider->apellidos }} - C.C. {{ number_format($lider->cc, 0, ',', '.') }}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                             <hr class="my-2">
                             <div class="row">
                                 <div class="col-md-6">
@@ -202,7 +219,6 @@
                             </div>
                         </div>
                         <div class="card-footer text-right">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Guardar y Agregar otro</button>
                             <button type="submit" id="guardar" class="btn btn-primary">Guardar</button>
                         </div>
                     </form>

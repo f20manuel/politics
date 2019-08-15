@@ -67,17 +67,12 @@
                     </div>
                 </div>
                 <div class="row mt-3">
-                    <div class="col-6">
+                    <div class="col-12">
                         @if (Route::has('password.request'))
                             <a href="{{ route('password.request') }}" class="text-light">
                                 <small>¿Olvidaste tu Contraseña?</small>
                             </a>
                         @endif
-                    </div>
-                    <div class="col-6 text-right">
-                        <a href="https://www.f20manuel.com" class="text-light" target="_blank">
-                            <small>Soporte Técnico</small>
-                        </a>
                     </div>
                 </div>
             </div>

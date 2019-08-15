@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Persona;
+use App\Lider;
 use App\Genero;
 use App\Departamento;
 use App\Municipio;
@@ -37,6 +38,7 @@ class PersonaController extends Controller
     public function index()
     {
         $personas = Persona::orderBy('id', 'desc')->paginate(500);
+        $lideres = Lider::all();
 
         $generos = Genero::all();
         $ningunGenero = $generos->last();
@@ -64,6 +66,7 @@ class PersonaController extends Controller
 
             return view('personas.personas', compact([
                 'personas',
+                'lideres',
                 'generos',
                 'ningunGenero',
                 'departamentos',
@@ -85,6 +88,7 @@ class PersonaController extends Controller
 
     public function edit(Persona $persona)
     {
+        $lideres = Lider::all();
 
         $generos = Genero::all();
         $ningunGenero = $generos->last();
@@ -112,6 +116,7 @@ class PersonaController extends Controller
 
         return view('personas.editar', compact([
             'persona',
+            'lideres',
             'generos',
             'ningunGenero',
             'departamentos',
@@ -189,6 +194,8 @@ class PersonaController extends Controller
     {
         $search = $request->input('search');
 
+        $departamento = Departamento::where('name', $search)->first();
+
         $personas = Persona::where('cc', 'LIKE', '%'.$search.'%')
                             ->orWhere('nombre', 'LIKE', '%'.$search.'%')
                             ->orWhere('fecha_nacimiento', 'LIKE', '%'.$search.'%')
@@ -197,6 +204,7 @@ class PersonaController extends Controller
                             ->orWhere('apellidos', 'LIKE', '%'.$search.'%')
                             ->orWhere('direccion', 'LIKE', '%'.$search.'%')
                             ->paginate(10);
+
         if($personas)
         {
             foreach($personas as $persona){
@@ -300,7 +308,7 @@ class PersonaController extends Controller
         if($update)
         {
             alert()->success('Los dato de '.$request->input('nombre').' '.$request->input('apellidos').', se han actualizado con éxito.', '¡Muy Bien!');
-            return redirect()->route('personas');
+            return redirect()->route('personas.index');
         }else{
             alert()->error('Lo sentimos ha ocurrido un error', '¡Ups!');
             return redirect()->back();

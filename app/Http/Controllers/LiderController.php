@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Lider;
+use App\Persona;
 use App\Genero;
 use App\Departamento;
 use App\Municipio;
@@ -28,7 +29,7 @@ class LiderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Persona $personas)
     {
         $lideres = lider::orderBy('id', 'desc')->paginate(500);
 
@@ -57,6 +58,7 @@ class LiderController extends Controller
         $ningunLV = $lugar_votacion->last();
 
             return view('personas.lideres', compact([
+                'personas',
                 'lideres',
                 'generos',
                 'ningunGenero',
@@ -208,7 +210,7 @@ class LiderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Lider $lider)
+    public function edit(Lider $lider, Persona $personas)
     {
 
         $generos = Genero::all();
@@ -236,6 +238,7 @@ class LiderController extends Controller
         $ningunLV = $lugar_votacion->last();
 
         return view('personas.editarLider', compact([
+            'personas',
             'lider',
             'generos',
             'ningunGenero',
@@ -287,7 +290,7 @@ class LiderController extends Controller
         if($update)
         {
             alert()->success('Los dato de '.$request->input('nombre').' '.$request->input('apellidos').', se han actualizado con éxito.', '¡Muy Bien!');
-            return redirect()->route('lideres');
+            return redirect()->route('lideres.index');
         }else{
             alert()->error('Lo sentimos ha ocurrido un error', '¡Ups!');
             return redirect()->back();

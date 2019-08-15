@@ -3,10 +3,15 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Permission\Traits\HasRoles;
 //use Sofa\Eloquence\Eloquence;
 
 class Persona extends Model
 {
+    use HasRoles;
+
+    protected $guard_name = 'web';
+
     protected $fillable = [
         'cc',
         'nombre',

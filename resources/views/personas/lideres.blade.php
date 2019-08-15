@@ -1,8 +1,11 @@
 @extends('layouts.app')
 @section('breadcrumb')
-    <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="{{ route('home') }}">Escritorio</a>
-    <p class="h4 text-white mb-1 mx-2">|</p>
-    <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block disabled" href="javascript:void(0)">Lideres</a>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ route('home') }}">Escritorio</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Lideres</li>
+        </ol>
+    </nav>
 @endsection
 @section('content')
 <div class="header bg-gradient-primary py-7 py-lg-8">
@@ -115,7 +118,7 @@
                                 <!-- Formulario para agregar personas -->
                                 <div class="modal fade" id="agregarLider" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                                    <form class="modal-content" action="{{ route('guardarLider') }}" method="POST">
+                                    <form class="modal-content" action="{{ route('lideres.save') }}" method="POST">
                                       @csrf
                                       <div class="modal-header">
                                         <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-user-shield fa-2x align-middle mr-2"></i>Agregar Lider</h4>
@@ -153,7 +156,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" data-tooltip="tooltip" title="Fecha de Nacimiento*" required>
+                                                    <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" data-tooltip="tooltip" title="Fecha de Nacimiento*" value="1970-01-01" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -337,7 +340,10 @@
                                         <?php
                                             $estado = $estado_apoyo->where('id', $lider->estado_apoyo_id)->first();
                                             $comuna = $comuna_id->where('id', $lider->comuna_id)->first();
+                                            $persona = $personas->where('lider_id', $lider->id)->get();
                                         ?>
+                                        <strong>Personas a Cargo: </strong> {{ $persona->count() }}
+                                        <br>
                                         <strong>Comuna: </strong> @if($comuna){{ $comuna->name }}@endif
                                         <br>
                                         <strong>Lugar de Votacion:</strong>
@@ -352,7 +358,7 @@
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                                                 <a class="dropdown-item" href="javascript:void(0);" data-toggle="modal" data-target="#eliminarLider{{ $lider->id }}">Eliminar</a>
-                                                <a href="{{ route('editarlider', $lider->id) }}" class="dropdown-item">Editar</a>
+                                                <a href="{{ route('lideres.edit', $lider->id) }}" class="dropdown-item">Editar</a>
                                             </div>
                                         </div>
                                     </td>
@@ -363,7 +369,7 @@
                             <!-- Form Edit Estado -->
                             <div class="modal fade" id="formEditEstado{{ $lider->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <form action="{{ route('updateEstadoLider', $persona->id) }}" method="POST">
+                                    <form action="{{ route('lideres.edit.estado', $persona->id) }}" method="POST">
                                         @csrf
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -405,7 +411,7 @@
                                                 <br>
                                                 pulse <b>Confirmar.</b>
                                                 <hr class="my-5">
-                                                <form action="{{ route('eliminarLider', $persona->id) }}" method="POST">
+                                                <form action="{{ route('lideres.delete', $persona->id) }}" method="POST">
                                                     @csrf
                                                     <div class="form-group row justify-content-center">
                                                         <div class="col-md-12">

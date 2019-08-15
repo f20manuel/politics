@@ -1,8 +1,11 @@
 @extends('layouts.app')
 @section('breadcrumb')
-    <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="{{ route('home') }}">Escritorio</a>
-    <p class="h4 text-white mb-1 mx-2">|</p>
-    <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block disabled" href="javascript:void(0)">Personas</a>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ route('home') }}">Escritorio</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Personas</li>
+        </ol>
+    </nav>
 @endsection
 @section('content')
 <div class="header bg-gradient-primary py-7 py-lg-8">
@@ -115,7 +118,7 @@
                                 <!-- Formulario para agregar personas -->
                                 <div class="modal fade" id="agregarPersona" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                                    <form class="modal-content" action="{{ route('guardarPersonas') }}" method="POST">
+                                    <form class="modal-content" action="{{ route('personas.save') }}" method="POST">
                                       @csrf
                                       <div class="modal-header">
                                         <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-users fa-2x align-middle mr-2"></i>Agregar Personas</h4>
@@ -124,8 +127,20 @@
                                         </button>
                                       </div>
                                       <div class="modal-body text-left">
-                                        <h2><i class="fas fa-user align-middle mr-2"></i>Información Personal</h2>
-                                        <hr class="my-2">
+                                        <div class="row pb-0">
+                                            <div class="col-md-6 mb-2">
+                                                <h2><i class="fas fa-user align-middle mr-2"></i>Información Personal</h2>
+                                            </div>
+                                            <div class="col-md-6 mb-2">
+                                                <select class="form-control" name="lider_id">
+                                                    <option selected disabled>Elegir un Lider</option>
+                                                    @foreach ($lideres as $lider)
+                                                        <option value="{{ $lider->id }}">{{ $lider->nombre }} {{ $lider->apellidos }} - C.C. {{ number_format($lider->cc, 0, ',', '.') }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <hr class="mb-2 mt-n5">
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
@@ -153,7 +168,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" data-tooltip="tooltip" title="Fecha de Nacimiento*" required>
+                                                    <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" data-tooltip="tooltip" title="Fecha de Nacimiento*" value="1970-01-01" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -337,7 +352,10 @@
                                         <?php
                                             $estado = $estado_apoyo->where('id', $persona->estado_apoyo_id)->first();
                                             $comuna = $comuna_id->where('id', $persona->comuna_id)->first();
+                                            $lider = $lideres->where('id', $persona->lider_id)->first();
                                         ?>
+                                        <strong>Lider: </strong> @if($lider){{$lider->nombre}} {{ $lider->apellidos }} @endif
+                                        <br>
                                         <strong>Comuna: </strong> @if($comuna){{ $comuna->name }}@endif
                                         <br>
                                         <strong>Lugar de Votacion:</strong>
@@ -352,7 +370,7 @@
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                                                 <a class="dropdown-item" href="javascript:void(0);" data-toggle="modal" data-target="#eliminarPersona{{ $persona->id }}">Eliminar</a>
-                                                <a href="{{ route('editarPersona', $persona->id) }}" class="dropdown-item">Editar</a>
+                                                <a href="{{ route('personas.edit', $persona->id) }}" class="dropdown-item">Editar</a>
                                             </div>
                                         </div>
                                     </td>
@@ -363,7 +381,7 @@
                             <!-- Form Edit Estado -->
                             <div class="modal fade" id="formEditEstado{{ $persona->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <form action="{{ route('updatePersona', $persona->id) }}" method="POST">
+                                    <form action="{{ route('personas.edit.estado', $persona->id) }}" method="POST">
                                         @csrf
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -405,7 +423,7 @@
                                                 <br>
                                                 pulse <b>Confirmar.</b>
                                                 <hr class="my-5">
-                                                <form action="{{ route('eliminarPersona', $persona->id) }}" method="POST">
+                                                <form action="{{ route('personas.delete', $persona->id) }}" method="POST">
                                                     @csrf
                                                     <div class="form-group row justify-content-center">
                                                         <div class="col-md-12">
