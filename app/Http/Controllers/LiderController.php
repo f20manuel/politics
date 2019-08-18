@@ -86,6 +86,10 @@ class LiderController extends Controller
      */
     public function create(Request $request)
     {
+        $validate = $request->validate([
+            'cc' => 'unique:liders'
+        ]);
+
         $lider = Lider::create($request->all());
 
         if($lider)
