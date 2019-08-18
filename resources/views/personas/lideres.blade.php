@@ -269,7 +269,7 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <textarea class="form-control" id="observacion" rows="3" placeholder="Observación..."></textarea>
+                                                    <textarea class="form-control" id="observacion" name="observacion" rows="3" placeholder="Observación..."></textarea>
                                                 </div>
                                             </div>
                                         </div>
