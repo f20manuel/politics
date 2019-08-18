@@ -178,6 +178,11 @@ class PersonaController extends Controller
 
     public function guardar(Request $request)
     {
+
+        $validate = $request->validate([
+            'cc' => 'unique:personas'
+        ]);
+
         $personas = Persona::create($request->all());
 
         if($personas)
@@ -303,6 +308,10 @@ class PersonaController extends Controller
 
     public function update(Request $request, Persona $persona)
     {
+        $validate = $request->validate([
+            'cc' => 'unique:personas'
+        ]);
+
         $update = $persona->update($request->all());
 
         if($update)

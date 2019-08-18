@@ -4,19 +4,13 @@ namespace App\Imports;
 
 use App\lider;
 use Maatwebsite\Excel\Concerns\ToModel;
-
-//for functions
-use App\Departamento;
-use App\Municipio;
-use App\Genero;
-use App\Ocupacion;
-use App\NivelAcademico;
-use App\EstadoApoyo;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 use DateTime;
 use IntlDateFormatter;
 
-class LideresImport implements ToModel
+class LideresImport implements ToModel, WithHeadingRow
 {
     /**
     * @param array $row
@@ -25,58 +19,94 @@ class LideresImport implements ToModel
     */
     public function model(array $row)
     {
-        function departamento($name)
+        if(!is_null($row['departamento']))
         {
-            $departamento = Departamento::where('name', $name)->first();
-            return $departamento->id;
+            $departamento = $row['departamento'];
+        }
+        else
+        {
+            $departamento = 'Ninguno';
         }
 
-        function municipio($name)
+        if(!is_null($row['municipio']))
         {
-            $municipio = Municipio::where('name', $name)->first();
-            return $municipio->id;
+            $municipio = $row['municipio'];
+        }
+        else{
+            $municipio = 'Ninguno';
         }
 
-        function genero($name)
+        if(!is_null($row['comuna']))
         {
-            $genero = Genero::where('name', $name)->first();
-            return $genero->id;
+            $comuna = $row['comuna'];
+        }
+        else
+        {
+            $comuna = 'Ninguna';
         }
 
-        function ocupacion($name)
+        if(!is_null($row['genero']))
         {
-            $ocupacion = Ocupacion::where('name', $name)->first();
-            return $ocupacion->id;
+            $genero = $row['genero'];
+        }
+        else
+        {
+            $genero = 'No Aplica';
         }
 
-        function nivelAcademico($name)
+        if(!is_null($row['fechanacimiento']))
         {
-            $nivelAcademico = NivelAcademico::where('name', $name)->first();
-            return $nivelAcademico->id;
+            $fecha = Date::excelToDateTimeObject($row['fechanacimiento']);
+        }
+        else
+        {
+            $fecha = '1970-01-01';
         }
 
-        function estadoApoyo($name)
+        if(!is_null($row['ocupacion']))
         {
-            $estadoApoyo = EstadoApoyo::where('name', $name)->first();
-            return $estadoApoyo->id;
+            $ocupacion = $row['ocupacion'];
+        }
+        else
+        {
+            $ocupacion = 'Otro';
         }
 
-        return new lider([
-            'cc' => $row[0],
-            'nombre' => $row[1],
-            'apellidos' => $row[2],
-            'celular' => $row[3],
-            'telefonos' => $row[4],
-            'email' => $row[5],
-            'departamento_id' => departamento($row[6]),
-            'municipio_id' => municipio($row[7]),
-            'direccion' => $row[8],
-            'genero_id' => genero($row[9]),
-            'fecha_nacimiento' => date('Y-m-d', strtotime($row[10])),
-            'ocupacion_id' => ocupacion($row[11]),
-            'nivel_academico_id' => nivelAcademico($row[12]),
-            'estado_apoyo_id' => estadoApoyo($row[13]),
-            'observacion' => $row[14],
+        if(!is_null($row['nivelacademico']))
+        {
+            $nivel = $row['nivelacademico'];
+        }
+        else
+        {
+            $nivel = 'Ninguno';
+        }
+
+        if(!is_null($row['estadoapoyo']))
+        {
+            $estado = $row['estadoapoyo'];
+        }
+        else
+        {
+            $estado = 'No contactado';
+        }
+
+        return new Persona([
+            'cc' => $row['cedula'],
+            'nombre' => $row['nombre'],
+            'apellidos' => $row['apellidos'],
+            'genero_id' => generos($genero),
+            'fecha_nacimiento' => $fecha,
+            'celular' => $row['celular'],
+            'telefonos' => $row['telefonos'],
+            'email' => $row['email'],
+            'departamento_id' => departamentos($departamento),
+            'municipio_id' => municipios($municipio),
+            'comuna_id' => comunas($comuna, $departamento, $municipio),
+            'direccion' => $row['direccion'],
+            'ocupacion_id' => ocupacion($ocupacion),
+            'nivel_academico_id' => nivelAcademico($nivel),
+            'estado_apoyo_id' => estadoApoyo($estado),
+            'observacion' => $row['obervacion'],
         ]);
     }
 }

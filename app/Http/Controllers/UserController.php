@@ -28,11 +28,11 @@ class UserController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function create()
+    public function create(User $user)
     {
         $roles = Role::all();
 
-        return view('users.create', compact(['roles']));
+        return view('users.create', compact(['roles', 'user']));
     }
 
     /**

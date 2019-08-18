@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Persona;
 use App\Lider;
 use App\EstadoApoyo;
+use App\Comuna;
 
 class HomeController extends Controller
 {
@@ -25,8 +26,61 @@ class HomeController extends Controller
     public function index(Persona $personas, Lider $lider)
     {
         $comprometida = EstadoApoyo::where('name', 'Comprometido')->first();
+        $noContactado = EstadoApoyo::where('name', 'No Contactado')->first();
+        $contactado = EstadoApoyo::where('name', 'Contactado')->first();
+        $noApoya = EstadoApoyo::where('name', 'No Apoya')->first();
+        $indeciso = EstadoApoyo::where('name', 'Indeciso')->first();
+
         $comprometidas = Persona::where('estado_apoyo_id', $comprometida->id)->get();
+        $noContactados = Persona::where('estado_apoyo_id', $noContactado->id)->get();
+        $contactados = Persona::where('estado_apoyo_id', $contactado->id)->get();
+        $noApoyan = Persona::where('estado_apoyo_id', $noApoya->id)->get();
+        $indecisos = Persona::where('estado_apoyo_id', $indeciso->id)->get();
+
         $lcom = Lider::where('estado_apoyo_id', $comprometida->id)->get();
+        $lnoContactados = Lider::where('estado_apoyo_id', $noContactado->id)->get();
+        $lcontactados = Lider::where('estado_apoyo_id', $contactado->id)->get();
+        $lnoApoyan = Lider::where('estado_apoyo_id', $noApoya->id)->get();
+        $lindecisos = Lider::where('estado_apoyo_id', $indeciso->id)->get();
+
+        $comunas = Comuna::where('name', 'LIKE', '%Comuna%')->get();
+        $corregimientos = Comuna::where('name', 'LIKE', '%Corregimiento%')->get();
+
+        $personaComuna = Persona::where('comuna_id', 1)
+                                ->orWhere('comuna_id', 2)
+                                ->orWhere('comuna_id', 3)
+                                ->orWhere('comuna_id', 4)
+                                ->orWhere('comuna_id', 5)
+                                ->orWhere('comuna_id', 6)
+                                ->orWhere('comuna_id', 7)
+                                ->orWhere('comuna_id', 8)
+                                ->orWhere('comuna_id', 9)
+                                ->orWhere('comuna_id', 10)
+                                ->orWhere('comuna_id', 11)
+                                ->orWhere('comuna_id', 12)
+                                ->orWhere('comuna_id', 13)
+                                ->get();
+
+        $personaCorregimiento = Persona::where('comuna_id', 14)
+                                       ->orWhere('comuna_id', 15)
+                                       ->orWhere('comuna_id', 16)
+                                       ->orWhere('comuna_id', 17)
+                                       ->orWhere('comuna_id', 18)
+                                       ->orWhere('comuna_id', 19)
+                                       ->orWhere('comuna_id', 20)
+                                       ->orWhere('comuna_id', 21)
+                                       ->orWhere('comuna_id', 22)
+                                       ->orWhere('comuna_id', 23)
+                                       ->orWhere('comuna_id', 24)
+                                       ->orWhere('comuna_id', 25)
+                                       ->orWhere('comuna_id', 26)
+                                       ->orWhere('comuna_id', 27)
+                                       ->orWhere('comuna_id', 28)
+                                       ->orWhere('comuna_id', 29)
+                                       ->orWhere('comuna_id', 30)
+                                       ->orWhere('comuna_id', 31)
+                                       ->orWhere('comuna_id', 32)
+                                       ->get();
 
         //chartsData
         $pEne = Persona::whereMonth('created_at', '01')->whereYear('created_at', '2019')->get();
@@ -135,6 +189,7 @@ class HomeController extends Controller
 
         return view('dashboard', compact([
             'personas',
+            'totalEstado',
             'pEne',
             'pFeb',
             'pMar',
@@ -150,7 +205,20 @@ class HomeController extends Controller
             'personasChart',
             'lider',
             'comprometidas',
-            'lcom'
+            'contactados',
+            'noContactados',
+            'noApoyan',
+            'indecisos',
+            'lcom',
+            'lcomprometidas',
+            'lcontactados',
+            'lnoContactados',
+            'lnoApoyan',
+            'lindecisos',
+            'comunas',
+            'corregimientos',
+            'personaComuna',
+            'personaCorregimiento'
         ]));
     }
 }

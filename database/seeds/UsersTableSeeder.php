@@ -21,6 +21,14 @@ class UsersTableSeeder extends Seeder
         $user->password = Hash::make('V-21163066');
         $user->save();
 
+        //Uriel User
+        $user = new User();
+        $user->name = 'Uriel';
+        $user->email = 'urielgo2001@yahoo.es';
+        $user->email_verified_at = now();
+        $user->password = Hash::make('urielgo0301');
+        $user->save();
+
         //Administrador
         $user = new User();
         $user->name = 'Administrador';

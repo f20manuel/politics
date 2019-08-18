@@ -22,22 +22,27 @@ Route::get('/', function () {
 //Lideres
 Route::get('/lideres', 'LiderController@index')->name('lideres.index');
 Route::get('/lider/{lider}/edit', 'LiderController@edit')->name('lideres.edit'); // Vista para editar
-Route::post('/importar-personas', 'PersonaController@ImportarExcel')->name('inpersonas');
-Route::get('/exportar-lideres', 'LiderController@ExportarExcel')->name('exlideres');
+Route::get('/exportar-lideres', 'LiderController@ExportarExcel')->name('exlideres')
+                                                                ->middleware('permission:lideres.exportar');
+Route::get('/importar-lideres', 'LiderController@ImportarExcel')->name('inlideres')
+                                                                ->middleware('permission:lideres.importar');
 Route::post('/search/lideres', 'LiderController@search')->name('searchLideres'); //Busqueda de Líderes
 Route::post('/lideres/guardar', 'LiderController@create')->name('lideres.save')
-                                                         ->middleware('permission:lideres.save'); // Guardar
+->middleware('permission:lideres.save'); // Guardar
 Route::post('/editar-lider/{lider}', 'LiderController@update')->name('lideres.update')
-                                                              ->middleware('permission:lideres.update'); // Editar
+->middleware('permission:lideres.update'); // Editar
 Route::post('/eliminarLider/{id}', 'LiderController@destroy')->name('lideres.delete')
-                                                             ->middleware('permission:lideres.delete'); // Eliminar
+->middleware('permission:lideres.delete'); // Eliminar
 Route::post('/editar-estado-lider/{lider}', 'LiderController@updateEstado')->name('lideres.edit.estado')
-                                                                           ->middleware('permission:lideres.edit.estado'); // Editar estado Apoyo
+->middleware('permission:lideres.edit.estado'); // Editar estado Apoyo
 
 //Personas
 Route::get('/personas', 'PersonaController@index')->name('personas.index');
 Route::get('/persona/{persona}/edit', 'PersonaController@edit')->name('personas.edit'); //Vista para editar
-Route::get('/exportar-personas', 'PersonaController@ExportarExcel')->name('expersonas');
+Route::post('/importar-personas', 'PersonaController@ImportarExcel')->name('inpersonas')
+                                                                    ->middleware('permission:personas.importar');
+Route::get('/exportar-personas', 'PersonaController@ExportarExcel')->name('expersonas')
+                                                                   ->middleware('permission:personas.exportar');
 Route::post('/search/personas', 'PersonaController@search')->name('searchPersonas'); //Busqueda de Líderes
 Route::post('/guardar-personas', 'PersonaController@Guardar')->name('personas.save')
                                                              ->middleware('permission:personas.save'); // Guardar

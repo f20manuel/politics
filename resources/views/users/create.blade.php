@@ -29,7 +29,11 @@
                                     <select class="form-control form-control-alternative" name="rol">
                                         <option selected disabled>Seleccionar Rol</option>
                                         @foreach ($roles as $rol)
-                                            <option value="{{ $rol->id }}">{{ $rol->name }}</option>
+                                            @if(Auth::user()->hasRole('Admin') and $rol->name == 'SuperAdmin')
+                                                <option value="{{ $rol->id }}" disabled hidden>{{ $rol->name }}</option>
+                                            @else
+                                                <option value="{{ $rol->id }}">{{ $rol->name }}</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </div>

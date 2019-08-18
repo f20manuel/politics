@@ -10,6 +10,11 @@
 @section('content')
 <div class="header bg-gradient-primary py-7 py-lg-8">
     <div class="container">
+        @if ($errors->any())
+            @foreach ($errors->all() as $error)
+                <input id="error" hidden value="{{ $error }}">
+            @endforeach
+        @endif
         <div class="header-body text-center mb-3">
             <div class="row justify-content-center">
                 <div class="col-lg-5 col-md-6">
@@ -51,18 +56,21 @@
                             </div>
 
                             <div class="col-md-8 pl-0 mb-2">
+                                @can('personas.exportar')
                                 <a href="{{ route('expersonas') }}">
                                 <button class="btn btn-icon mr-2 btn-3 btn-secondary" type="sutmit">
                                 	<span class="btn-inner--icon"><i class="fas fa-file-excel"></i></span>
-
                                     <span class="btn-inner--text">Excel</span>
                                 </button>
                                 </a>
+                                @endcan
                                     <input hidden id="importar" type="file" name="personasFile">
                                     <!-- Button trigger modal -->
+                                        @can('personas.importar')
                                         <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#importarModal">
                                             Importar Excel
                                         </button>
+                                        @endcan
 
                                         <!-- Modal -->
                                         <div class="modal fade" id="importarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -161,7 +169,12 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <input type="number" class="form-control" id="cc" name="cc" placeholder="Cédula de Ciudadanía" required>
+                                                    <input type="number" class="form-control @error('cc') is-invalid @enderror" id="cc" name="cc" placeholder="Cédula de Ciudadanía" required>
+                                                    @error('cc')
+                                                        <span class="invalid-feedback" style="display: block;" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                    @enderror
                                                 </div>
                                             </div>
                                         </div>
@@ -276,7 +289,7 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <textarea class="form-control" id="observacion" rows="3" placeholder="Observación..."></textarea>
+                                                    <textarea class="form-control" id="observacion" rows="3" name="observacion" placeholder="Observación..."></textarea>
                                                 </div>
                                             </div>
                                         </div>

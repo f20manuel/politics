@@ -15,35 +15,19 @@ class EstadoApoyoTableSeeder extends Seeder
         $estado = new EstadoApoyo();
         $estado->name = 'Comprometido';
         $estado->save();
-        
+
         $estado = new EstadoApoyo();
         $estado->name = 'Indeciso';
         $estado->save();
-        
+
         $estado = new EstadoApoyo();
         $estado->name = 'Contactado';
         $estado->save();
-        
+
         $estado = new EstadoApoyo();
         $estado->name = 'No Apoya';
         $estado->save();
-        
-        $estado = new EstadoApoyo();
-        $estado->name = 'Llamado 1ra Vez';
-        $estado->save();
-        
-        $estado = new EstadoApoyo();
-        $estado->name = 'Llamado 2da Vez';
-        $estado->save();
-        
-        $estado = new EstadoApoyo();
-        $estado->name = 'Llamado 3ra Vez';
-        $estado->save();
-        
-        $estado = new EstadoApoyo();
-        $estado->name = 'No es el número de titular';
-        $estado->save();
-        
+
         $estado = new EstadoApoyo();
         $estado->name = 'No contactado';
         $estado->save();
