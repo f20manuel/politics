@@ -45,7 +45,12 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <input type="number" class="form-control" id="cc" name="cc" placeholder="Cédula de Ciudadanía" value="{{ $lider->cc }}" required>
+                                        <input type="number" class="form-control @error('cc') is-invalid @enderror" id="cc" name="cc" placeholder="Cédula de Ciudadanía" value="{{ $lider->cc }}" required>
+                                        @error('cc')
+                                            <span class="invalid-feedback" style="display: block;" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>

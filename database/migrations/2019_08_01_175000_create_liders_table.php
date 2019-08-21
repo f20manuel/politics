@@ -17,7 +17,7 @@ class CreateLidersTable extends Migration
             $table->bigIncrements('id');
             $table->integer('cc')->unique();
             $table->string('nombre');
-            $table->string('apellidos');
+            $table->string('apellidos')->nullable();
             $table->string('celular')->unique();
             $table->string('telefonos')->nullable();
             $table->string('email')->unique()->nullable();

@@ -13,8 +13,8 @@
             <li class="nav-item dropdown">
                 <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <div class="media align-items-center">
-                        <span class="avatar avatar-sm rounded-circle">
-                        <img alt="Image placeholder" src="{{ asset('argon') }}/img/theme/team-1-800x800.jpg">
+                        <span class="avatar avatar-sm bg-dark rounded-circle">
+                            <h2 class="text-white align-middle m-5">{{ substr(auth()->user()->name, 0, 1) }}</h2>
                         </span>
                     </div>
                 </a>
@@ -25,10 +25,6 @@
                     <a href="{{ route('profile.edit') }}" class="dropdown-item">
                         <i class="ni ni-single-02"></i>
                         <span>Mi Perfil</span>
-                    </a>
-                    <a href="#" class="dropdown-item">
-                        <i class="ni ni-settings-gear-65"></i>
-                        <span>Configuración</span>
                     </a>
                     <div class="dropdown-divider"></div>
                     <a href="{{ route('logout') }}" class="dropdown-item" onclick="event.preventDefault();
@@ -92,6 +88,16 @@
                         </a>
                     </li>
                 @endcan
+            </ul>
+            <hr class="my-4">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault();
+                    document.getElementById('logout-form').submit();">
+                        <i class="ni ni-user-run text-primary"></i>
+                        <span>Salir</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

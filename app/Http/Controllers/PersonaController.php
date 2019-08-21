@@ -308,9 +308,12 @@ class PersonaController extends Controller
 
     public function update(Request $request, Persona $persona)
     {
-        $validate = $request->validate([
-            'cc' => 'unique:personas'
-        ]);
+        if($request->input('cc') != $persona->cc)
+        {
+            $validate = $request->validate([
+                'cc' => 'unique:personas'
+            ]);
+        }
 
         $update = $persona->update($request->all());
 

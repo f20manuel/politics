@@ -289,6 +289,13 @@ class LiderController extends Controller
      */
     public function update(Request $request, Lider $lider)
     {
+        if($request->input('cc') != $lider->cc)
+        {
+            $validate = $request->validate([
+                'cc' => 'unique:liders'
+            ]);
+        }
+
         $update = $lider->update($request->all());
 
         if($update)

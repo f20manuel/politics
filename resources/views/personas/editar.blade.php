@@ -29,6 +29,7 @@
                                 </div>
                                 <div class="col-md-6 mb-2">
                                     <select class="form-control" name="lider_id" data-tooltip="tooltip" title="">
+                                        <option value="{{ null }}">Sin Asignar</option>
                                         @foreach ($lideres as $lider)
                                             @if ($lider->id == $persona->lider_id)
                                                 <option value="{{ $lider->id }}" selected>{{ $lider->nombre }} {{ $lider->apellidos }} - C.C. {{ number_format($lider->cc, 0, ',', '.') }}</option>
@@ -60,7 +61,12 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <input type="number" class="form-control" id="cc" name="cc" placeholder="Cédula de Ciudadanía" value="{{ $persona->cc }}" required>
+                                        <input type="number" class="form-control @error('cc') is-invalid @enderror" id="cc" name="cc" placeholder="Cédula de Ciudadanía" value="{{ $persona->cc }}" required>
+                                        @error('cc')
+                                            <span class="invalid-feedback" style="display: block;" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>

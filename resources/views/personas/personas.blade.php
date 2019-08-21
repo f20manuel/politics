@@ -141,7 +141,7 @@
                                             </div>
                                             <div class="col-md-6 mb-2">
                                                 <select class="form-control" name="lider_id">
-                                                    <option selected disabled>Elegir un Lider</option>
+                                                    <option value="{{ null }}" selected>Sin Asignar</option>
                                                     @foreach ($lideres as $lider)
                                                         <option value="{{ $lider->id }}">{{ $lider->nombre }} {{ $lider->apellidos }} - C.C. {{ number_format($lider->cc, 0, ',', '.') }}</option>
                                                     @endforeach
@@ -367,7 +367,7 @@
                                             $comuna = $comuna_id->where('id', $persona->comuna_id)->first();
                                             $lider = $lideres->where('id', $persona->lider_id)->first();
                                         ?>
-                                        <strong>Lider: </strong> @if($lider){{$lider->nombre}} {{ $lider->apellidos }} @endif
+                                        <strong>Lider: </strong> @if($lider){{$lider->nombre}} {{ $lider->apellidos }} @else Sin Asignar @endif
                                         <br>
                                         <strong>Comuna: </strong> @if($comuna){{ $comuna->name }}@endif
                                         <br>
