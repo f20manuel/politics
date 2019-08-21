@@ -219,7 +219,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <textarea class="form-control" id="observacion" rows="3" placeholder="Observación...">{{ $persona->observacion }}</textarea>
+                                        <textarea class="form-control" id="observacion" rows="3" name="observacion" placeholder="Observación...">{{ $persona->observacion }}</textarea>
                                     </div>
                                 </div>
                             </div>
